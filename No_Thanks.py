@@ -44,13 +44,16 @@ class Player(object):
         self.card_hand = list()
         self.chip_hand = 11
         
-    def draw_card(self, deck, player):
+    def draw_card(self, deck, player, type_play):
         global card_pool
         
         card_pool = deck.draw()
         print(f'{self.name} draws the number ' + str(card_pool) + ".")
         
-        player.weighted_play(player, deck)
+        if type_play == 'weighted':
+            player.weighted_play(player, deck)
+        elif type_play == 'random':
+            player.rand_play(player, deck)
     
     def take_card(self, player, deck):
         global card_pool
@@ -181,7 +184,21 @@ def Run_Game(player_1, player_2, player_3):
     card_pool = 0
     chip_pool = 0
     game_end = False
-    Player_1.draw_card(deck, Player_1)
+
+    random_start = True
+    if random_start:
+        turn_no = random.randint(1, 3)
+        if turn_no == 1:
+            Player_1.draw_card(deck, Player_1)
+        elif turn_no == 2:
+            Player_2.draw_card(deck, Player_2)
+        elif turn_no == 3:
+            Player_3.draw_card(deck, Player_3)
+    
+    else:
+        turn_no = 1
+        Player_1.draw_card(deck, Player_1)
+
     
     while not game_end:
         turn_no += 1
